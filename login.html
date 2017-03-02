@@ -10,7 +10,7 @@
         Login
     </h1>
     
-    <form>
+    <form id="loginform">
             <p id="username">
                 <label for="username">Username</label>
                 <input required id="user" name = "user" type="text" required/>
@@ -23,24 +23,30 @@
             <input type="submit" id="continue" name="continue" value="Continue"/>
 
     </form>
-    <script>
-    $.ajax({
-        type: "POST",
-        url: 'checkLogin.php',
-        data: {
-            username: $("#user").val(),
-            password: $("#pass").val()
-        },
-        success: function(data)
-        {
-            if (JSON.parse(data) === 'true') {
-                window.location.replace('homepage.html');
+    <script type="text/javascript">
+    $(document).ready(function() {
+    $('#loginform').submit(function() {
+        $.ajax({
+            type: "POST",
+            url: 'checkLogin.php',
+            data: {
+                username: $("#user").val(),
+                password: $("#pass").val()
+            },
+            success: function(data)
+            {
+                if (data === 'true') {
+                    window.location.replace('homepage.html');
+                }
+                else {
+                    alert('Invalid Credentials');
+                }
             }
-            else {
-                alert('Invalid Credentials');
-            }
-        }
+        });
     });
+    });
+    
+                           
         
         
     </script>
