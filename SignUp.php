@@ -8,7 +8,7 @@ class Account {
     public $pubKey;
     public $privKey;
 } 
-
+$array = array();
 $acc = new Account();
 $rsa = new Crypt_RSA();
 $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
@@ -16,21 +16,21 @@ $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
 extract($rsa->createKey(4)); /// makes $publickey and $privatekey available
 $acc->privKey = $privatekey;
 $acc->pubKey = $publickey;
-$acc->user = $_GET["user"];
-$acc->pass = $_GET["pass"];
-$filename = "users.txt";
-$myfile = fopen($filename,"w") or die ("Unable to open file!");
-if (($bar = file_get_contents($filename))!== false) {
-    $str = json_encode($acc);
-    print_r($bar);
+$acc->user = $_POST["user"];
+$acc->pass = $_POST["pass"];
+$filename = 'users.txt';
+//$myfile = fopen($filename,"w") or die ("Unable to open file!");
+if (!file_exists($filename) || ($bar = file_get_contents($filename))=== '') {
+    array_push($array,$acc);
 }
 else{
-    $str = json_decode($bar);
-    
+//    ($bar = file_get_contents($filename));
+    $array = json_decode($bar);
+    array_push($array,$acc);
 }
-file_put_contents($str)
-fwrite($myfile, $acc);
-fclose($myfile);
-
-
+$str = json_encode($array);
+//echo $str;
+file_put_contents($filename, $str);
+header('Location: login.html');
+exit;
 ?>
