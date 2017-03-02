@@ -19,16 +19,17 @@ $acc->pubKey = $publickey;
 $acc->user = $_GET["user"];
 $acc->pass = $_GET["pass"];
 $filename = "users.txt";
-if (filesize('users.txt') == 0){
-    $myfile = fopen($filename,"w") or die ("Unable to open file!");
-    $acc = json_encode($acc);
-    fwrite($myfile, $acc);
-}
-else{
-    $bar = fread($handle, filesize($filename));
-    $bar = json_decode($bar);
+$myfile = fopen($filename,"w") or die ("Unable to open file!");
+if (($bar = file_get_contents($filename))!== false) {
+    $str = json_encode($acc);
     print_r($bar);
 }
+else{
+    $str = json_decode($bar);
+    
+}
+file_put_contents($str)
+fwrite($myfile, $acc);
 fclose($myfile);
 
 
