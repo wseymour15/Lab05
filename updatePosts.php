@@ -22,9 +22,9 @@ function check(){
     }
     return false;
 }
-
+$array = array();
+$filename = 'posts.txt';
 if($_POST["postID"] == -1 ){
-    $array = array();
     $pst = new Post();
 
     //$pst->user = $_SESSION["login"];
@@ -32,7 +32,6 @@ if($_POST["postID"] == -1 ){
     $pst->title = $_POST["postTitle"];
     $pst->msg = $_POST["postDesc"];
     $pst->tim = time();
-    $filename = 'posts.txt';
     //$myfile = fopen($filename,"w") or die ("Unable to open file!");
     if (!file_exists($filename) || ($bar = file_get_contents($filename))=== '') {
         $pst->pid=0;
@@ -50,7 +49,23 @@ if($_POST["postID"] == -1 ){
     echo json_encode($array);
 }
 else if($_POST["postID"] == -2){
-    
+    $bar = file_get_contents($filename);
+    echo $bar;
 }
-echo null;
+else{
+    $bar = file_get_contents($filename);
+    $array = json_decode($bar);
+    if(check()){
+        $pst->user = "Walter";
+        $pst->title = $_POST["postTitle"];
+        $pst->msg = $_POST["postDesc"];
+        $pst->tim = time();
+        $pst->pid = $_POST["postID"];
+        $array[$_POST["postID"]] = $pst;
+        echo json_encode($array);
+    }
+    else{
+        echo $bar;
+    }
+}
 ?>
