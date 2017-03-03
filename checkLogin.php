@@ -1,4 +1,7 @@
 <?php
+session_start();
+?>
+<?php
 function check(){
     $i;
     $array = array();
@@ -12,6 +15,7 @@ function check(){
     return false;
 }
 header('Content-type: application/json');
+$_SESSION['login'] = $_POST['username'];
 //$path = 'phpseclib';
 //	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 //	include_once('Crypt/RSA.php');
