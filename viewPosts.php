@@ -24,11 +24,11 @@
 
      <input onCLick="" type="button" id="newpost" name="newpost" value="New Post"/>
 	
-	<form id="popup">
-		<label>Title<input type="text" id="title" name="tile" value=""/></label>
+	<form id="popup" action="javascript:void(0)" method = "post">
+		<label>Title<input type="text" id="title" name="title" value=""/></label>
 		<br/ >
 		<label>Description<input type="text" id="desc" name="desc" value=""/></label>
-		<input onCLick="" type="button" id="post" name="post" value="Post"/>
+		<input onCLick="" type="submit" id="post" name="post" value="Post"/>
 	</form>
 
     <p id="disp"></p>
@@ -38,13 +38,22 @@
 </body>
 	
 <script>
-	
+	function helper(f)
+{
+        var request = new XMLHttpRequest();
+        request.open("GET", f, false);
+        request.send(null);
+        var returnValue = request.responseText;
+        return returnValue;
+}
 
 	
-function updateTable(){
-	var text = helper("users.txt");
-	var obj = JSON.parse(text);
-	var newJSON = {};
+function updateTable(obj){
+//	var text = helper("po.txt");
+    console.log("hello");
+//    console.log(text);
+    if(obj !== undefined){
+	//var obj = JSON.parse(text);
 	for (var i = 0; i < obj.length; i++) {
   		tabBody=document.getElementsByTagName("TBODY").item(0);
 		row=document.createElement("TR");
@@ -54,9 +63,9 @@ function updateTable(){
 		cell4 = document.createElement("TD");
 		let delButton = document.createElement('button');
 		delButton.innerHTML = "Update";
-		textnode1=document.createTextNode(obj[i].user);
-		textnode2=document.createTextNode(obj[i].pass);
-		textnode3=document.createTextNode(obj[i].time);
+		textnode1=document.createTextNode(obj[i].title);
+		textnode2=document.createTextNode(obj[i].msg);
+		textnode3=document.createTextNode(obj[i].tim);
 		cell1.appendChild(textnode1);
 		cell2.appendChild(textnode2);
 		cell3.appendChild(textnode3);
@@ -67,6 +76,7 @@ function updateTable(){
 		row.appendChild(cell4);
 		tabBody.appendChild(row);
 	}
+}
 	
 }	
 
@@ -74,6 +84,7 @@ $(document).ready(function() {
     $('#popup').submit(function() {
         $.ajax({
             type: "POST",
+            method: "post",
             url: 'updatePosts.php',
             data: {
 				postID: -1,
@@ -82,25 +93,30 @@ $(document).ready(function() {
             },
             success: function(data)
             {
-                updateTable();
+                console.log(data);
+                updateTable(data);
             }
         });
     });
 });
-	
-function helper(f)
-{
-        var request = new XMLHttpRequest();
-        request.open("GET", f, false);
-        request.send(null);
-        var returnValue = request.responseText;
-        return returnValue;
-}
 
 	
 	
 window.onload = () => {
-	updateTable();
+        $.ajax({
+            method: "POST",
+            url: 'updatePosts.php',
+            data: {
+				postID: -2,
+                postTitle: $("#title").val(),
+                postDesc: $("#desc").val()
+            },
+            success: function(data)
+            {
+                console.log(data);
+                updateTable(data);
+            }
+        });
 
 	document.getElementById("newpost").onclick=(function(){
 		var popup = document.getElementById("popup");
@@ -113,9 +129,9 @@ window.onload = () => {
 			postTitle = document.getElementById("title").value;
 			postDesc = document.getElementById("desc").value;
 			popup.style.display = "none";
-			document.getElementById("title").value = "";
-		    document.getElementById("desc").value = "";
-			
+//			document.getElementById("title").value = "";
+//		    document.getElementById("desc").value = "";
+//			
 //			 row=document.createElement("TR");
 //			 cell1 = document.createElement("TD");
 //			 cell2 = document.createElement("TD");
@@ -166,7 +182,3 @@ table, th, td {
 }
 	
 </style>
-
-<?php
-	  
-?>

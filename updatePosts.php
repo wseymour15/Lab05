@@ -2,11 +2,12 @@
 $path = 'phpseclib';
 	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 	include_once('Crypt/RSA.php');
+header('Content-type: application/json');
 class Post { 
     public $user;
     public $title;
     public $msg;
-    public $time;
+    public $tim;
     public $pid; 
 } 
 function check(){
@@ -22,14 +23,15 @@ function check(){
     return false;
 }
 
-if($_POST["postID"] == -1){
+if($_POST["postID"] == -1 ){
     $array = array();
     $pst = new Post();
 
-    $pst->user = $_SESSION["login"];
+    //$pst->user = $_SESSION["login"];
+    $pst->user = "Walter";
     $pst->title = $_POST["postTitle"];
     $pst->msg = $_POST["postDesc"];
-    $pst->title = time();
+    $pst->tim = time();
     $filename = 'posts.txt';
     //$myfile = fopen($filename,"w") or die ("Unable to open file!");
     if (!file_exists($filename) || ($bar = file_get_contents($filename))=== '') {
@@ -39,17 +41,16 @@ if($_POST["postID"] == -1){
     else{
     //    ($bar = file_get_contents($filename));
         $array = json_decode($bar);
-        $pst->id = sizeof($array);
+        $pst->pid = sizeof($array);
         array_push($array,$pst);
     }
     $str = json_encode($array);
-    //echo $str;
     file_put_contents($filename, $str);
-    header('Location: viewPosts.php');
-    exit;
+//    header('Location: viewPosts.php');
+    echo json_encode($array);
 }
-//else if(check()){
-//    
-//}
-
+else if($_POST["postID"] == -2){
+    
+}
+echo null;
 ?>

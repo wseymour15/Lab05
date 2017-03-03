@@ -10,7 +10,7 @@
         Login
     </h1>
     
-    <form id="loginform">
+    <form id="loginform"  action="javascript:void(0)" method = "post">
             <p id="username">
                 <label for="username">Username</label>
                 <input required id="user" name = "user" type="text" required/>
@@ -27,7 +27,8 @@
     $(document).ready(function() {
     $('#loginform').submit(function() {
         $.ajax({
-            type: "POST",
+            method: "post",
+            type: "post",
             url: 'checkLogin.php',
             data: {
                 username: $("#user").val(),
@@ -36,7 +37,7 @@
             success: function(data)
             {
                 if (data === 'true') {
-                    window.location.replace('homepage.html');
+                    window.location.replace('viewPosts.php');
                 }
                 else {
                     alert('Invalid Credentials');
