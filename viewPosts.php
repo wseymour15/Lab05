@@ -42,6 +42,14 @@
 		<label>Description<input type="text" id="descUp" name="descUp" value=""/></label>
 		<input onCLick="" type="submit" id="enterVal" value="Post"/>
 	</form>
+	
+	<form id="mesPop" action="javascript:void(0)" method = "post">
+		<label>To <br/ ><input type="text" id="toSend" name="toSend" value=""/></label>
+		<br/ >
+		<label>Message<input type="text" id="mesSend" name="mesSend" value=""/></label>
+		<br/ >
+		<input onCLick="" type="submit" id="sender" name="sender" value="Send"/>
+	</form>
 
     <p id="disp"></p>
 	<br/ >
@@ -251,6 +259,17 @@ window.onload = () => {
 		});
 
 	});
+	
+	document.getElementById("newmessage").onclick=(function(){
+		var mesPop = document.getElementById("mesPop");
+		mesPop.style.display = "block";
+		
+		document.getElementById("sender").onclick=(function(){
+			mesPop.style.display = "none";
+			
+		});
+
+	});
 //        var elem = document.getElementsByName("upBut");
 //        var n;
 //        for(n = 0; n < elem.length; ++n){
@@ -303,6 +322,20 @@ table, th, td {
    position:fixed;
    left:80%;            
    top:50%;           
+   width:200px;        
+   height:100px;
+   margin-top:-75px; 
+   margin-left:-150px;  
+   background:#FFFFFF;  
+   border:2px solid #000;  
+   z-index:100000;     
+}
+	
+#mesPop {
+   display:none;
+   position:fixed;
+   left:50%;            
+   top:75%;           
    width:200px;        
    height:100px;
    margin-top:-75px; 
