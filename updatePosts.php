@@ -16,16 +16,16 @@ function check(){
     $str = file_get_contents('posts.txt');
     $array = json_decode($str);
         for($i=0;$i<sizeof($array);$i++){
-        if($array[$i]->user === $_SESSION["login"] && $array[$i]->pid === $_POST['postID']){
+        //if($array[$i]->user === $_SESSION["login"] && $array[$i]->pid === $_POST['postID']){
             return true;
-        }
+        //}
     }
     return false;
 }
 $array = array();
 $filename = 'posts.txt';
+$pst = new Post();
 if($_POST["postID"] == -1 ){
-    $pst = new Post();
 
     //$pst->user = $_SESSION["login"];
     $pst->user = "Walter";
@@ -40,7 +40,7 @@ if($_POST["postID"] == -1 ){
     else{
     //    ($bar = file_get_contents($filename));
         $array = json_decode($bar);
-        $pst->pid = sizeof($array);
+        $pst->pid = sizeof($array)-1;
         array_push($array,$pst);
     }
     $str = json_encode($array);
@@ -55,17 +55,17 @@ else if($_POST["postID"] == -2){
 else{
     $bar = file_get_contents($filename);
     $array = json_decode($bar);
+    $pst->user = "Walter";
+    $pst->title = $array[$_POST["postID"]]->title;
+    $pst->msg = $_POST["postDesc"];
+    $pst->tim = time();
     if(check()){
-        $pst->user = "Walter";
-        $pst->title = $_POST["postTitle"];
-        $pst->msg = $_POST["postDesc"];
-        $pst->tim = time();
-        $pst->pid = $_POST["postID"];
-        $array[$_POST["postID"]] = $pst;
-        echo json_encode($array);
+        array_splice($array,$_POST["postID"],1);
+        $pst->pid = sizeof($array)-1;
+        array_push($array,$pst);
+        $str = json_encode($array);
+        file_put_contents($filename, $str);
     }
-    else{
-        echo $bar;
-    }
+    echo $str;
 }
 ?>
