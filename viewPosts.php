@@ -24,6 +24,8 @@
 
      <input onCLick="" type="button" id="newpost" name="newpost" value="New Post"/>
 	
+	<input onCLick="" type="button" id="newmessage" name="newmessage" value="New Message"/>
+	
 	<form id="popup" action="javascript:void(0)" method = "post">
 		<label>Title<input type="text" id="title" name="title" value=""/></label>
 		<br/ >
@@ -35,7 +37,16 @@
 <!--		<label>Title<input type="text" id="titleUp" name="titleUp" value=""/></label>-->
 		<br/ >
 		<label>Description<input type="text" id="descUp" name="descUp" value=""/></label>
-		<input onCLick="" type="submit" id="enterVal" value="Post"/>
+		<br/ >
+		<input onCLick="" type="submit" id="enterVal" name="post" value="Post"/>
+	</form>
+	
+	<form id="mesPop" action="javascript:void(0)" method = "post">
+		<label>To <br/ ><input type="text" id="toSend" name="toSend" value=""/></label>
+		<br/ >
+		<label>Message<input type="text" id="mesSend" name="mesSend" value=""/></label>
+		<br/ >
+		<input onCLick="" type="submit" id="sender" name="sender" value="Send"/>
 	</form>
 
     <p id="disp"></p>
@@ -151,6 +162,26 @@ $(document).ready(function() {
             }
         });
     });
+	
+	$('#mesPop').submit(function() {
+		$.ajax({
+			type: "POST",
+            method: "post",
+            url: 'sendMessage.php',
+			data: {
+                recipient: $("#toSend").val(),
+                messageVal: $("#mesSend").val()
+            },
+			success: function(data)
+            {
+				
+				
+			}
+		});	
+		
+		
+	});	
+	
 });
     $(document).ready(function() {
    $('#popup1').submit(function() {
@@ -208,12 +239,19 @@ window.onload = () => {
 		popup.style.display = "block";
 		
 		document.getElementById("post").onclick=(function(){
-			var postTitle;
-			var postDesc;
-			var curTime = new Date().toLocaleString();
-			postTitle = document.getElementById("title").value;
-			postDesc = document.getElementById("desc").value;
 			popup.style.display = "none";
+			
+		});
+
+	});
+	
+	
+	document.getElementById("newmessage").onclick=(function(){
+		var mesPop = document.getElementById("mesPop");
+		mesPop.style.display = "block";
+		
+		document.getElementById("sender").onclick=(function(){
+			mesPop.style.display = "none";
 			
 		});
 
@@ -270,6 +308,20 @@ table, th, td {
    position:fixed;
    left:80%;            
    top:50%;           
+   width:200px;        
+   height:100px;
+   margin-top:-75px; 
+   margin-left:-150px;  
+   background:#FFFFFF;  
+   border:2px solid #000;  
+   z-index:100000;     
+}
+	
+#mesPop {
+   display:none;
+   position:fixed;
+   left:50%;            
+   top:75%;           
    width:200px;        
    height:100px;
    margin-top:-75px; 
