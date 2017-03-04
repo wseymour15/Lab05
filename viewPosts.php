@@ -40,7 +40,7 @@
 	</form>
     
     <form id="popup1" action="javascript:void(0)" method = "post">
-		<label>Title<input type="text" id="titleUp" name="titleUp" value=""/></label>
+<!--		<label>Title<input type="text" id="titleUp" name="titleUp" value=""/></label>-->
 		<br/ >
 		<label>Description<input type="text" id="descUp" name="descUp" value=""/></label>
 		<br/ >
@@ -62,10 +62,13 @@
 </body>
 	
 <script>
-        function fun(){
+    var postNum;
+        function fun(did){
 		var popup = document.getElementById("popup1");
 		popup.style.display = "block";
-		
+            postNum = did;
+        //popup.name = i;
+		//console.log(popup.name);
 		document.getElementById("enterVal").onclick=(function(){
 			var postTitle;
 			var postDesc;
@@ -75,7 +78,11 @@
 			popup.style.display = "none";
 			
 		})
-    }    
+    }
+    function freak(but){
+        but.onclick = function(){fun(but.id)};
+    }
+    
 	function helper(f)
 {
         var request = new XMLHttpRequest();
@@ -92,7 +99,9 @@ function updateTable(obj){
 //    console.log(text);
     if(obj !== undefined){
 	//var obj = JSON.parse(text);
+//        var j;
 	for (var i = 0; i < obj.length; i++) {
+        j=obj.length -i;
   		tabBody=document.getElementsByTagName("TBODY").item(0);
 		row=document.createElement("TR");
 		cell1 = document.createElement("TD");
@@ -100,9 +109,8 @@ function updateTable(obj){
 		cell3 = document.createElement("TD");
 		cell4 = document.createElement("TD");
 		delButton = document.createElement('button');
-        delButton.onclick = (function(){fun()});
-        delButton.setAttribute("id",i);
-        delButton.setAttribute("name", "upBut");
+        delButton.id = i;
+        freak(delButton);
 		delButton.innerHTML = "Update";
 		textnode1=document.createTextNode(obj[i].title);
 		textnode2=document.createTextNode(obj[i].msg);
@@ -142,8 +150,8 @@ $(document).ready(function() {
 		cell3 = document.createElement("TD");
 		cell4 = document.createElement("TD");
 		let delButton = document.createElement('button');
-        delButton.setAttribute("id",data.length-1);
-        delButton.setAttribute("name", "upBut");
+        delButton.id = data.length-1;
+        freak(delButton);
 		delButton.innerHTML = "Update";
 		textnode1=document.createTextNode(data[data.length-1].title);
 		textnode2=document.createTextNode(data[data.length-1].msg);
@@ -191,11 +199,28 @@ $(document).ready(function() {
 	});	
 	
 });
-
-	
-	
-window.onload = () => {
+    $(document).ready(function() {
+   $('#popup1').submit(function() {
         $.ajax({
+            type: "POST",
+            method: "post",
+            url: 'updatePosts.php',
+            data: {
+				postID: postNum,
+                postTitle: "",
+                postDesc: $("#descUp").val()
+            },
+            success: function(data)
+            {
+              console.log("we out here");
+                //location.reload();
+                $("TBODY").empty();
+                updateTable(data);
+            }
+        });
+    });
+});
+	        $.ajax({
             method: "POST",
             url: 'updatePosts.php',
             data: {
@@ -209,6 +234,21 @@ window.onload = () => {
                 updateTable(data);
             }
         });
+window.onload = () => {
+//        $.ajax({
+//            method: "POST",
+//            url: 'updatePosts.php',
+//            data: {
+//				postID: -2,
+////                postTitle: $("#title").val(),
+////                postDesc: $("#desc").val()
+//            },
+//            success: function(data)
+//            {
+//                console.log(data);
+//                updateTable(data);
+//            }
+//        });
 
 	document.getElementById("newpost").onclick=(function(){
 		var popup = document.getElementById("popup");
