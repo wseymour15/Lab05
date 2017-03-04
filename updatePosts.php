@@ -17,9 +17,9 @@ function check(){
     $str = file_get_contents('posts.txt');
     $array = json_decode($str);
         for($i=0;$i<sizeof($array);$i++){
-            //if($array[$i]->user == $_SESSION["login"] && $array[$i]->pid == $_POST['postID']){
+            if($array[$i]->user == $_SESSION["login"] && $array[$i]->pid == $_POST['postID']){
                 return true;
-            //}
+            }
         }
     return false;
 }
@@ -39,7 +39,7 @@ if($_POST["postID"] == -1 ){
     else{
     //    ($bar = file_get_contents($filename));
         $array = json_decode($bar);
-        $pst->pid = sizeof($array)-1;
+        $pst->pid = sizeof($array);
         array_push($array,$pst);
     }
     $str = json_encode($array);
@@ -54,16 +54,22 @@ else if($_POST["postID"] == -2){
 else{
     $bar = file_get_contents($filename);
     $array = json_decode($bar);
-    $pst->user = $_SESSION["login"];
-    $pst->title = $array[$_POST["postID"]]->title;
-    $pst->msg = $_POST["postDesc"];
-    $pst->tim = time();
-    if(check()){
+    if($_SESSION["login"]=== 'admin'){
         array_splice($array,$_POST["postID"],1);
-        $pst->pid = sizeof($array)-1;
-        array_push($array,$pst);
-        $str = json_encode($array);
+         $str = json_encode($array);
         file_put_contents($filename, $str);
+    }else{
+        $pst->user = $_SESSION["login"];
+        $pst->title = $array[$_POST["postID"]]->title;
+        $pst->msg = $_POST["postDesc"];
+        $pst->tim = time();
+        if(check()){
+            array_splice($array,$_POST["postID"],1);
+            $pst->pid = sizeof($array)-1;
+            array_push($array,$pst);
+            $str = json_encode($array);
+            file_put_contents($filename, $str);
+        }
     }
     echo $str;
 }
