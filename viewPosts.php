@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"> </script>
 <head>
@@ -8,6 +9,7 @@
 <body>
     <h1>
         Homepage
+		<p> Hello <?php echo $_SESSION["login"]; ?></p>
     </h1>
     <div>
 	<table id = "posttable" style="width:100%">
@@ -25,6 +27,10 @@
      <input onCLick="" type="button" id="newpost" name="newpost" value="New Post"/>
 	
 	<input onCLick="" type="button" id="newmessage" name="newmessage" value="New Message"/>
+	<br/ >
+	<form id="goInbox" action="javascript:void(0)" method = "post"><input type="submit" id="inbox" name="inbox" value="Inbox"/></form>
+	
+	
 	
 	<form id="popup" action="javascript:void(0)" method = "post">
 		<label>Title<input type="text" id="title" name="title" value=""/></label>
@@ -167,8 +173,18 @@ $(document).ready(function() {
 			success: function(data)
             {
 				
-				
 			}
+		});	
+		
+		
+	});	
+	
+	$('#goInbox').submit(function() {
+		$.ajax({
+			success: function(data)
+            {
+                window.location.replace('inbox.php');
+            }
 		});	
 		
 		

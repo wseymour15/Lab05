@@ -1,4 +1,5 @@
 <?php
+session_start();
 $path = 'phpseclib';
 	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 	include_once('Crypt/RSA.php');
@@ -28,7 +29,7 @@ if($_POST["postID"] == -1 ){
     $pst = new Post();
 
     //$pst->user = $_SESSION["login"];
-    $pst->user = "Walter";
+    $pst->user = $_SESSION["login"];
     $pst->title = $_POST["postTitle"];
     $pst->msg = $_POST["postDesc"];
     $pst->tim = time();
@@ -56,7 +57,7 @@ else{
     $bar = file_get_contents($filename);
     $array = json_decode($bar);
     if(check()){
-        $pst->user = "Walter";
+        $pst->user = $_SESSION["login"];
         $pst->title = $_POST["postTitle"];
         $pst->msg = $_POST["postDesc"];
         $pst->tim = time();
