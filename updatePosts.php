@@ -1,4 +1,5 @@
 <?php
+session_start();
 $path = 'phpseclib';
 	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 	include_once('Crypt/RSA.php');
@@ -16,17 +17,16 @@ function check(){
     $str = file_get_contents('posts.txt');
     $array = json_decode($str);
         for($i=0;$i<sizeof($array);$i++){
-        if($array[$i]->user === $_SESSION["login"] && $array[$i]->pid === $_POST['postID']){
-            return true;
+            //if($array[$i]->user == $_SESSION["login"] && $array[$i]->pid == $_POST['postID']){
+                return true;
+            //}
         }
-    }
     return false;
 }
 $array = array();
 $filename = 'posts.txt';
 $pst = new Post();
 if($_POST["postID"] == -1 ){
-
     $pst->user = $_SESSION["login"];
     $pst->title = $_POST["postTitle"];
     $pst->msg = $_POST["postDesc"];
@@ -54,7 +54,7 @@ else if($_POST["postID"] == -2){
 else{
     $bar = file_get_contents($filename);
     $array = json_decode($bar);
-    $pst->user = "Walter";
+    $pst->user = $_SESSION["login"];
     $pst->title = $array[$_POST["postID"]]->title;
     $pst->msg = $_POST["postDesc"];
     $pst->tim = time();

@@ -14,7 +14,7 @@ $acc = new Account();
 $rsa = new Crypt_RSA();
 $rsa->setPrivateKeyFormat(CRYPT_RSA_PRIVATE_FORMAT_PKCS1);
 $rsa->setPublicKeyFormat(CRYPT_RSA_PUBLIC_FORMAT_PKCS1);
-extract($rsa->createKey(4)); /// makes $publickey and $privatekey available
+extract($rsa->createKey(1024)); /// makes $publickey and $privatekey available
 $acc->privKey = $privatekey;
 $acc->pubKey = $publickey;
 $acc->user = $_POST["user"];
