@@ -16,9 +16,9 @@ function check(){
     $str = file_get_contents('posts.txt');
     $array = json_decode($str);
         for($i=0;$i<sizeof($array);$i++){
-        //if($array[$i]->user === $_SESSION["login"] && $array[$i]->pid === $_POST['postID']){
+        if($array[$i]->user === $_SESSION["login"] && $array[$i]->pid === $_POST['postID']){
             return true;
-        //}
+        }
     }
     return false;
 }
@@ -27,8 +27,7 @@ $filename = 'posts.txt';
 $pst = new Post();
 if($_POST["postID"] == -1 ){
 
-    //$pst->user = $_SESSION["login"];
-    $pst->user = "Walter";
+    $pst->user = $_SESSION["login"];
     $pst->title = $_POST["postTitle"];
     $pst->msg = $_POST["postDesc"];
     $pst->tim = time();
